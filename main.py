@@ -1,5 +1,5 @@
 import time
-from real_estate_prices.page import InchLv
+from page import InchLv
 
 
 def main():
