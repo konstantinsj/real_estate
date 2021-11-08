@@ -1,11 +1,12 @@
 import time
 from page import InchLv
+from crypto_api.main import Crypto
 
 
 def main():
     start_time = time.time()
     page = InchLv()
-    result = page.get_data(subdistricts="Pļavnieki", deal_type="rent")
+    result = page.get_data(subdistricts="Pļavnieki")
     page.close()
     print(result)
     save_file(result, "output.txt")
