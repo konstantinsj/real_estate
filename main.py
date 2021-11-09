@@ -1,13 +1,16 @@
-import time
-from inchlv.page import InchLv
-from inchlv.helpers import Helpers as h
+from inch_lv.page import InchLv
+from inch_lv.helpers import Helpers as h
+from ss_com import ss_scraping
 
 
 def main():
+    # get data from inch.lv and save it:
     page = InchLv()
     result = page.get_data(subdistricts="Pļavnieki", crypto="BTC")
-    print(result)
     h.save_file(result, "output.txt")
+
+    # get data from ss.lv and save it:
+    ss_scraping.scrape("https://www.ss.com/lv/real-estate/flats/ogre-and-reg/sell/", "dzivokli_ogre.txt")
 
 
 if __name__ == "__main__":

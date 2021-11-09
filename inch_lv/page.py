@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from inchlv.locators import Locators
+from inch_lv.locators import Locators
 from crypto_api.main import Crypto
 
 

@@ -1,7 +1,9 @@
 """
 This is ss.com web scraping project for Ogre city apartments
 The main purpose is to extract data from advertisements such as price, rooms, sqm, street etc.
-The result will be saved in a text file apartments_ogre.txt
+
+link = link to ss.com, like "https://www.ss.com/lv/real-estate/flats/ogre-and-reg/sell/"
+output = file name to save results
 
 """
 import re
@@ -9,18 +11,17 @@ import requests
 from bs4 import BeautifulSoup
 from crypto_api.main import Crypto
 
-dzivokli_ogre = "https://www.ss.com/lv/real-estate/flats/ogre-and-reg/sell/"
 
-
-def scrape_website():
-    """ Main function of module calls all sub-functions"""
-    ogre_listing = get_bs_object(dzivokli_ogre)
-    listing_nr = find_single_page_urls(ogre_listing)
+def scrape(link, output):
+    """ Main function of module calls all sub-functions
+    """
+    listing = get_bs_object(link)
+    listing_nr = find_single_page_urls(listing)
     print("found " + str(len(listing_nr)) + " listings ...")
-    extract_data_from_url(listing_nr, "ogre_apartment_list.txt")
+    extract_data_from_url(listing_nr, output)
 
 
-def extract_data_from_url(nondup_urls: list, dest_file: str) ->None:
+def extract_data_from_url(nondup_urls: list, dest_file: str) -> None:
     """Iterate over all first page msg urls extract info from each url and write to file
      pluss convert prices to Bitcoin
      """
@@ -40,11 +41,11 @@ def extract_data_from_url(nondup_urls: list, dest_file: str) ->None:
         # Extract message price field
         price_line = "Price: " + table_price[0] + "\n"
         zime = table_price[0].index("€")
-        cena=(table_price[0][:zime].replace(" ", ""))
+        cena = (table_price[0][:zime].replace(" ", ""))
         print(cena, type(cena))
-        convert=Crypto() #getting crypto rates
-        crypto_price=convert.get_price_in_crypto(cena, "EUR", "BTC") #converting to crypto
-        crypto_line= "Price in crypto: " + crypto_price + "\n"
+        convert = Crypto()  # getting crypto rates
+        crypto_price = convert.get_price_in_crypto(cena, "EUR", "BTC")  # converting to crypto
+        crypto_line = "Price in crypto: " + crypto_price + "\n"
         write_line(price_line, dest_file)
         write_line(crypto_line, dest_file)
 
@@ -76,14 +77,14 @@ def find_single_page_urls(bs_object) -> list:
 
 def get_msg_field_info(msg_url: str, span_id: str):
     """ This function finds span id in url and returns value """
-    r  = requests.get(msg_url)
+    r = requests.get(msg_url)
     data = r.text
     soup = BeautifulSoup(data, "html.parser")
     span = soup.find("span", id=span_id)
     return span.text
 
 
-def get_msg_table_info(msg_url: str, td_class: str) ->list:
+def get_msg_table_info(msg_url: str, td_class: str) -> list:
     """ This function parses message page and extracts td_class table fields
     Returns: str list with table field data
     """
@@ -97,15 +98,12 @@ def get_msg_table_info(msg_url: str, td_class: str) ->list:
     for data in table_data:
         tostr = str(data)
         no_front = tostr.split('">', 1)[1]
-        name = no_front.split("</",1)[0]
+        name = no_front.split("</", 1)[0]
         table_fields.append(name)
     return table_fields
 
 
-def write_line(text: str,file_name: str) ->None:
+def write_line(text: str, file_name: str) -> None:
     """ Append text to end of the file"""
     with open(file_name, 'a', encoding="utf-8") as the_file:
         the_file.write(text)
-
-
-scrape_website()
