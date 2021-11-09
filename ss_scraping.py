@@ -5,12 +5,9 @@ The result will be saved in a text file apartments_ogre.txt
 
 """
 import re
-
 import requests
 from bs4 import BeautifulSoup
-
-import cyrpto
-from cyrpto import Crypto
+from crypto_api.main import Crypto
 
 dzivokli_ogre = "https://www.ss.com/lv/real-estate/flats/ogre-and-reg/sell/"
 
