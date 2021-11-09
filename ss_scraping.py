@@ -17,7 +17,7 @@ def scrape_website():
     ogre_listing = get_bs_object(dzivokli_ogre)
     listing_nr = find_single_page_urls(ogre_listing)
     print("found " + str(len(listing_nr)) + " listings ...")
-    extract_data_from_url(listing_nr, "6ogre_apartments.txt")
+    extract_data_from_url(listing_nr, "ogre_apartment_list.txt")
 
 
 def extract_data_from_url(nondup_urls: list, dest_file: str) ->None:
