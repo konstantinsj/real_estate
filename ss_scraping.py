@@ -17,11 +17,13 @@ def scrape_website():
     ogre_listing = get_bs_object(dzivokli_ogre)
     listing_nr = find_single_page_urls(ogre_listing)
     print("found " + str(len(listing_nr)) + " listings ...")
-    extract_data_from_url(listing_nr, "1ogre_apartments.txt")
+    extract_data_from_url(listing_nr, "6ogre_apartments.txt")
 
 
 def extract_data_from_url(nondup_urls: list, dest_file: str) ->None:
-    """Iterate over all first page msg urls extract info from each url and write to file """
+    """Iterate over all first page msg urls extract info from each url and write to file
+     pluss convert prices to Bitcoin
+     """
     msg_url_count = len(nondup_urls)
     for i in range(msg_url_count):
         current_msg_url = nondup_urls[i] + "\n"
@@ -37,9 +39,12 @@ def extract_data_from_url(nondup_urls: list, dest_file: str) ->None:
 
         # Extract message price field
         price_line = "Price: " + table_price[0] + "\n"
+        zime = table_price[0].index("€")
+        cena=(table_price[0][:zime].replace(" ", ""))
+        print(cena, type(cena))
         convert=Crypto() #getting crypto rates
-        crypto_price=convert.get_price_in_crypto((table_price, "EUR", "BTC")) #converting to crypto
-        crypto_line= "Price in crypto: " + crypto_price[0] + "\n"
+        crypto_price=convert.get_price_in_crypto(cena, "EUR", "BTC") #converting to crypto
+        crypto_line= "Price in crypto: " + crypto_price + "\n"
         write_line(price_line, dest_file)
         write_line(crypto_line, dest_file)
 
