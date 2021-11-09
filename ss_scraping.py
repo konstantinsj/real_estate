@@ -38,7 +38,7 @@ def extract_data_from_url(nondup_urls: list, dest_file: str) ->None:
         # Extract message price field
         price_line = "Price: " + table_price[0] + "\n"
         convert=Crypto() #getting crypto rates
-        crypto_price=convert.get_price_in_crypto((table_price, "EUR", cyrpto)) #converting to crypto
+        crypto_price=convert.get_price_in_crypto((table_price, "EUR", "BTC")) #converting to crypto
         crypto_line= "Price in crypto: " + crypto_price[0] + "\n"
         write_line(price_line, dest_file)
         write_line(crypto_line, dest_file)
