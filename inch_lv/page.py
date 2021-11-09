@@ -9,7 +9,7 @@ from crypto_api.main import Crypto
 
 class InchLv(object):
     """
-    Inch.lv data parser.
+    Inch.lv data parser. Requires Selenium.
     """
 
     def __init__(self):
